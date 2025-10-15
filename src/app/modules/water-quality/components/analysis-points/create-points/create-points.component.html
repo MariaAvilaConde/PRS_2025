@@ -1,0 +1,148 @@
+<!-- Modal Overlay -->
+<div *ngIf="isOpen" class="fixed inset-0 z-[8000]" (keydown.escape)="onClose()" tabindex="0">
+  <!-- Background overlay - CLIC PARA CERRAR -->
+  <div class="absolute inset-0 bg-transparent transition-opacity duration-300" (click)="onClose()"></div>
+
+  <!-- Modal Panel -->
+  <div class="absolute right-0 top-0 h-full w-full max-w-3xl bg-white shadow-xl transform transition-transform duration-300 ease-out flex flex-col"
+       [class.translate-x-full]="!isOpen" [class.translate-x-0]="isOpen" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 bg-slate-900 text-white flex-shrink-0">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-700 text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold">Crear Punto de Prueba</h2>
+          <p class="text-sm text-slate-400">Complete los datos del nuevo punto de prueba</p>
+        </div>
+      </div>
+      <button (click)="onClose()"
+              class="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+              [disabled]="isSaving">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+          </path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido del Modal -->
+    <div class="flex-1 overflow-y-auto min-h-0">
+      <form [formGroup]="createForm" (ngSubmit)="onCreatePoint()" class="p-6 space-y-6">
+
+        <!-- Sección: Datos del Punto -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800">Datos del Punto</h3>
+          </div>
+          <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Código -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Código <span class="text-red-500">*</span>
+                </label>
+                <input type="text" formControlName="code" placeholder="Ingrese código"
+                       class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all"
+                       [class.border-red-500]="validationErrors['code']">
+                <div *ngIf="validationErrors['code']" class="text-red-500 text-sm mt-2">
+                  {{ validationErrors['code'] }}
+                </div>
+              </div>
+
+              <!-- Nombre -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre <span class="text-red-500">*</span>
+                </label>
+                <input type="text" formControlName="name" placeholder="Ingrese nombre"
+                       class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all"
+                       [class.border-red-500]="validationErrors['name']">
+                <div *ngIf="validationErrors['name']" class="text-red-500 text-sm mt-2">
+                  {{ validationErrors['name'] }}
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Tipo de Punto -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Tipo de Punto <span class="text-red-500">*</span>
+                </label>
+                <select formControlName="type"
+                        class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all appearance-none bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==')] bg-no-repeat bg-right-4 bg-[length:20px_20px]"
+                        [class.border-red-500]="validationErrors['type']">
+                  <option value="" disabled selected>Seleccione tipo</option>
+                  <option *ngFor="let type of pointTypes" [value]="type.value">{{ type.label }}</option>
+                </select>
+                <div *ngIf="validationErrors['type']" class="text-red-500 text-sm mt-2">
+                  {{ validationErrors['type'] }}
+                </div>
+              </div>
+
+              <!-- Zona -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Zona <span class="text-red-500">*</span>
+                </label>
+                <select formControlName="zoneId"
+                        class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all appearance-none bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==')] bg-no-repeat bg-right-4 bg-[length:20px_20px]"
+                        [class.border-red-500]="validationErrors['zoneId']">
+                  <option value="" disabled selected>Seleccione zona</option>
+                  <option *ngFor="let zone of availableZones" [value]="zone.id">{{ zone.name }}</option>
+                </select>
+                <div *ngIf="validationErrors['zoneId']" class="text-red-500 text-sm mt-2">
+                  {{ validationErrors['zoneId'] }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Descripción
+              </label>
+              <textarea formControlName="description" rows="4" placeholder="Ingrese descripción (opcional)"
+                        class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all"></textarea>
+            </div>
+
+            <!-- Estado -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Estado <span class="text-red-500">*</span>
+              </label>
+              <select formControlName="status"
+                      class="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all appearance-none bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==')] bg-no-repeat bg-right-4 bg-[length:20px_20px]">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex justify-end gap-4 pt-4">
+          <button type="button" (click)="onClose()" [disabled]="isSaving"
+                  class="px-6 py-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 shadow-sm transition-all">
+            Cancelar
+          </button>
+
+          <button type="submit" [disabled]="isSaving"
+                  class="px-6 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 shadow-sm transition-all">
+            <div *ngIf="isSaving"
+                 class="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2">
+            </div>
+            {{ isSaving ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Fin Modal Overlay -->

@@ -1,0 +1,71 @@
+{
+  "name": "vg-web-sistemajass",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^20.3.1",
+    "@angular/common": "^20.3.1",
+    "@angular/compiler": "^20.3.1",
+    "@angular/core": "^20.3.1",
+    "@angular/forms": "^20.3.1",
+    "@angular/platform-browser": "^20.3.1",
+    "@angular/router": "^20.3.1",
+    "@ngrx/effects": "^20.0.1",
+    "@ngrx/store": "^20.0.1",
+    "@ngrx/store-devtools": "^20.0.1",
+    "@tailwindcss/postcss": "^4.1.13",
+    "chart.js": "^4.5.0",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.18",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
+    "keycloak-angular": "^20.0.0",
+    "keycloak-js": "^26.2.0",
+    "lodash-es": "^4.17.21",
+    "ng2-charts": "^8.0.0",
+    "ngx-mask": "^20.0.3",
+    "postcss": "^8.5.6",
+    "primeng": "^20.1.2",
+    "rxjs": "~7.8.0",
+    "tailwindcss": "^4.1.13",
+    "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.1",
+    "@angular/cli": "^20.3.1",
+    "@angular/compiler-cli": "^20.3.1",
+    "@types/crypto-js": "^4.2.2",
+    "@types/file-saver": "^2.0.7",
+    "@types/jasmine": "~5.1.0",
+    "@types/lodash-es": "^4.17.12",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.9.2"
+  }
+}
